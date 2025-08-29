@@ -25,7 +25,7 @@ def handle_inline_features(l):
 
         # skip if we're parsing code right now
         if in_code:
-            pass
+            continue
 
         if w.__contains__('*'):
             w = w.replace('*', '**')
@@ -57,6 +57,7 @@ def wiki_to_markdown(lines):
         if not in_code_fence and l.lstrip().startswith('{{{'):
             l = l.replace('{', '`')
             in_code_fence = True
+            # gotta update line too, otherwise we won't do it ever
             output_lines[index] = l
         elif in_code_fence and l.lstrip().startswith('}}}'):
             l = l.replace('}', '`')
@@ -64,7 +65,7 @@ def wiki_to_markdown(lines):
 
         # don't evaluate other parts if we're parsing code right now
         if in_code_fence:
-            pass
+            continue
 
         # turn wiki headers into markdown headers
         if l.startswith('='):
