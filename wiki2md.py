@@ -21,9 +21,10 @@ def handle_inline_features(l):
         # toggle whether we're in a code block
         if w.__contains__('`'):
             in_code = not in_code
+            continue
             # no replacement here
 
-        # skip if we're parsing code right now
+        # skip if we're still parsing code
         if in_code:
             continue
 
