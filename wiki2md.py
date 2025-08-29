@@ -9,14 +9,74 @@ Convert .wiki notes to .md so you can share them easily.
 import argparse
 import sys
 
-#import misletoe # overkill?
-
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
-def wiki_to_markdown(lines):
+def handle_inline_features(l):
+    words = l.split(' ')
+    output_words = words
 
-    return lines
+    in_code = False
+    for index, w in enumerate(words):
+        # toggle whether we're in a code block
+        if w.__contains__('`'):
+            in_code = not in_code
+            # no replacement here
+
+        # skip if we're parsing code right now
+        if in_code:
+            pass
+
+        if w.__contains__('*'):
+            w = w.replace('*', '**')
+
+        if w.__contains__('_'):
+            w = w.replace('_', '*')
+
+        # update output for word
+        output_words[index] = w
+
+    return ' '.join(output_words)
+
+def handle_header(l):
+    # split the line into parts. the title is *rest, except the ending ===
+    start, *rest = l.split(' ')
+    title = ' '.join(rest[:-1])
+
+    # turn the start (multiple =s) into just as many #s and re-add it to the line
+    start = start.replace('=', '#')
+    header = start + ' ' + title + '\n'
+    return header
+
+def wiki_to_markdown(lines):
+    output_lines = lines
+
+    in_code_fence = False
+    for index, l in enumerate(lines):
+        # start or end a code fence
+        if not in_code_fence and l.lstrip().startswith('{{{'):
+            l = l.replace('{', '`')
+            in_code_fence = True
+            output_lines[index] = l
+        elif in_code_fence and l.lstrip().startswith('}}}'):
+            l = l.replace('}', '`')
+            in_code_fence = False
+
+        # don't evaluate other parts if we're parsing code right now
+        if in_code_fence:
+            pass
+
+        # turn wiki headers into markdown headers
+        if l.startswith('='):
+            l = handle_header(l)
+
+        # handle inline features of the line
+        l = handle_inline_features(l)
+
+        # update output for line
+        output_lines[index] = l
+
+    return output_lines
 
 def main():
     # parse
