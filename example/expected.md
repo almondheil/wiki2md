@@ -3,16 +3,16 @@
 It has all of the features we care about converting, which are:
 
   - headers
-  - *bold*
-  - _italics_
+  - **bold**
+  - *italics*
   - code fenced sections
   - `inline code`
 
-And no, it does *NOT* do anything to convert [[links]]. Those stay the same.
+And no, it does **NOT** do anything to convert [[links]]. Those stay the same.
 
-# Code might be complicated
+## Code might be complicated
 
-Obviously, if we have *bold* or even _*bold italics*_ in normal text they should be converted.
+Obviously, if we have **bold** or even ***bold italics*** in normal text they should be converted.
 
 ```
 but in a fenced block, *bold* and _*bold italics*_ should stay the same.
@@ -23,7 +23,7 @@ def fenced_blocks_should(also):
   keep_their['languages'] = True
 ```
 
-the same logic should apply to `inline code`, where `*bold* and _italics* inside of them` should not get converted.
+the same logic should apply to `inline code`, where `wiki-style *bold* and _italics_ inside of them` should not get converted.
 
 ###### here is a random h6 because why not
 
