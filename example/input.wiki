@@ -23,7 +23,7 @@ def fenced_blocks_should(also):
   keep_their['languages'] = True
 }}}
 
-the same logic should apply to `inline code`, where `*bold* and _italics* inside of them` should not get converted.
+the same logic should apply to `inline code`, where `wiki-style *bold* and _italics_ inside of them` should not get converted.
 
 ====== here is a random h6 because why not ======
 
